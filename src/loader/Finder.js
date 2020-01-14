@@ -5,10 +5,6 @@ const Bag = require('nlc-util/src/data/Bag');
 
 module.exports = class Finder {
 
-  constructor() {
-    require('nlc');
-  }
-
   /**
    * @param {string|module} context
    */
