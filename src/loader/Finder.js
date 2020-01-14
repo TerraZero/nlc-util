@@ -21,6 +21,7 @@ module.exports = class Finder {
     const root = FindPackage(context).next();
 
     if (root !== undefined && root.value !== undefined) {
+      console.log(root.value);
       const nlc = require.resolve(root.value.name + '/nlc.json');
 
       if (FS.existsSync(nlc)) {
