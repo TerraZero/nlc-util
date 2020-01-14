@@ -1,0 +1,27 @@
+{
+  "name": "nlc-util",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TerraZero/nlc-util.git"
+  },
+  "author": "TerraZero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TerraZero/nlc-util/issues"
+  },
+  "homepage": "https://github.com/TerraZero/nlc-util#readme",
+  "dependencies": {
+    "find-package-json": "^1.2.0",
+    "node-dependency-injection": "^2.6.1",
+    "simple-node-logger": "^18.12.23"
+  },
+  "devDependencies": {
+    "nlc-util": "file:."
+  }
+}
