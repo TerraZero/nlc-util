@@ -21,7 +21,6 @@ module.exports = class Finder {
     const root = FindPackage(context).next();
 
     if (root !== undefined && root.value !== undefined) {
-      console.log(root.value);
       const nlc = require.resolve(root.value.name + '/nlc.json');
 
       if (FS.existsSync(nlc)) {
@@ -39,7 +38,9 @@ module.exports = class Finder {
    */
   register(collection, context) {
     const nlc = this.getNLC(context);
-    collection.addBag(root.value.name, new Bag(nlc));
+    if (nlc === null) return;
+
+    collection.addBag(nlc.value.name, new Bag(nlc));
 
     if (nlc.nlc.extensions !== undefined) {
       for (const extension of nlc.nlc.extensions) {
