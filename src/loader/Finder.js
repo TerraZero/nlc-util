@@ -1,9 +1,14 @@
-const FindPackage = require('find-package-json');
-const FS = require('fs');
+import FindPackage from 'find-package-json';
+import FS from 'fs';
+import Path from 'path';
 
-const Bag = require('nlc-util/src/data/Bag');
+import Bag from 'nlc-util/src/data/Bag';
 
-module.exports = class Finder {
+export default class Finder {
+
+  constructor(require) {
+    this._require = require;
+  }
 
   /**
    * @param {string|module} context
@@ -18,16 +23,16 @@ module.exports = class Finder {
   }
 
   getNLC(context) {
-    const root = FindPackage(context).next();
+    try {
+      const path = this._require.resolve(context + '/nlc.json');
 
-    if (root !== undefined && root.value !== undefined) {
-      const nlc = require.resolve(root.value.name + '/nlc.json');
+      if (FS.existsSync(path)) {
+        const nlc = this._require(path);
 
-      if (FS.existsSync(nlc)) {
-        root.nlc = require(nlc);
-        return root;
+        nlc._path = path;
+        return nlc;
       }
-    }
+    } catch (e) { }
     return null;
   }
 
@@ -37,13 +42,16 @@ module.exports = class Finder {
    * @param {string|module} context
    */
   register(collection, context) {
+    if (Path.isAbsolute(context)) {
+      context = Path.parse(context).base;
+    }
     const nlc = this.getNLC(context);
     if (nlc === null) return;
 
-    collection.addBag(nlc.value.name, new Bag(nlc));
+    collection.addBag(context, new Bag(nlc));
 
-    if (nlc.nlc.extensions !== undefined) {
-      for (const extension of nlc.nlc.extensions) {
+    if (nlc.extensions !== undefined) {
+      for (const extension of nlc.extensions) {
         this.register(collection, extension);
       }
     }

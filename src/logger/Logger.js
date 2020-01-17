@@ -1,4 +1,4 @@
-module.exports = class Logger {
+export default class Logger {
 
   /**
    * @param {import('nlc-util/src/logger/LoggerBuilder')} builder

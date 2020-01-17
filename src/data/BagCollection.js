@@ -1,4 +1,4 @@
-module.exports = class BagCollection {
+export default class BagCollection {
 
   /**
    * @param {string} default_bag

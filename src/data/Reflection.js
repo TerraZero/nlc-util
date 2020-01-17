@@ -1,4 +1,13 @@
-module.exports = class Reflection {
+export default class Reflection {
+
+  static getFunctionNameFromKey(key, seperator = '.', first = false) {
+    const splits = key.split(seperator);
+
+    for (let i = (first ? 0 : 1); i < splits.length; i++) {
+      splits[i] = splits[i].charAt(0).toUpperCase() + splits[i].slice(1);
+    }
+    return splits.join('');
+  }
 
   /**
    * @param {function} func

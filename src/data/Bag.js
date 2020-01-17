@@ -1,6 +1,6 @@
-const Reflection = require('nlc-util/src/data/Reflection');
+import Reflection from 'nlc-util/src/data/Reflection';
 
-module.exports = class Bag {
+export default class Bag {
 
   constructor(data = {}) {
     this._data = data;

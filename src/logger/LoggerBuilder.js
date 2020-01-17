@@ -1,9 +1,9 @@
-const SimpleNodeLogger = require('simple-node-logger');
-const FS = require('fs');
+import SimpleNodeLogger from 'simple-node-logger';
+import FS from 'fs';
 
-const Logger = require('nlc-util/src/logger/Logger');
+import Logger from 'nlc-util/src/logger/Logger';
 
-module.exports = class NLCLogger {
+export default class NLCLogger {
 
   constructor(quite = false) {
     this._quite = quite;

@@ -19,9 +19,7 @@
   "dependencies": {
     "find-package-json": "^1.2.0",
     "node-dependency-injection": "^2.6.1",
-    "simple-node-logger": "^18.12.23"
-  },
-  "devDependencies": {
+    "simple-node-logger": "^18.12.23",
     "nlc-util": "file:."
   }
 }

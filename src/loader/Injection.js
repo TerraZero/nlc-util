@@ -1,6 +1,8 @@
-const { ContainerBuilder, JsonFileLoader } = require('node-dependency-injection');
+import { ContainerBuilder, JsonFileLoader } from 'node-dependency-injection';
 
-module.exports = class Injection {
+import Reflection from 'nlc-util/src/data/Reflection';
+
+export default class Injection {
 
   constructor() {
     this._container = new ContainerBuilder();
@@ -13,6 +15,73 @@ module.exports = class Injection {
 
   get loader() {
     return this._loader;
+  }
+
+  /**
+   * @param {string} service
+   */
+  get(service) {
+    return this.container.get(service);
+  }
+
+  /**
+   * @param {string} service
+   * @param {object} object
+   * @param {array} args
+   */
+  register(service, object = null, args = []) {
+    return this.container.register(service, object, args);
+  }
+
+  /**
+   * @param {string} service
+   * @param {Object} instance
+   */
+  set(service, instance) {
+    return this.container.set(service, instance);
+  }
+
+  /**
+   * @param {string} tag
+   */
+  findTags(tag) {
+    return this.container.findTaggedServiceIds(tag);
+  }
+
+  /**
+   * @param {string} tag
+   * @param {Map<string, any>} service_results
+   */
+  getRelevantTags(tag, service_results) {
+    const services = [];
+
+    for (const [key, definition] of service_results) {
+      for (const definition_tag of definition.tags) {
+        if (definition_tag.name === tag) {
+          services.push({
+            key: key,
+            attributes: definition_tag.attributes,
+          });
+        }
+      }
+    }
+
+    services.sort((a, b) => {
+      return (Number.parseInt(a.attributes.get('weight')) || 0) - (Number.parseInt(b.attributes.get('weight')) || 0);
+    });
+    return services;
+  }
+
+  /**
+   * @param {string} tag
+   * @param  {...any} params
+   */
+  trigger(tag, ...params) {
+    const services = this.getRelevantTags(tag, this.findTags(tag));
+
+    for (const service of services) {
+      this.get(service.key)[(service.attributes.get('method') || Reflection.getFunctionNameFromKey(tag))](...params);
+    }
   }
 
 }
