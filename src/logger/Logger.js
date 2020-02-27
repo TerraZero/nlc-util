@@ -1,7 +1,7 @@
 export default class Logger {
 
   /**
-   * @param {import('nlc-util/src/logger/LoggerBuilder')} builder
+   * @param {import('nlc-util/src/logger/LoggerBuilder').default} builder
    * @param {import('simple-node-logger/lib/Logger')} logger
    * @param {string} context
    */

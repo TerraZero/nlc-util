@@ -1,7 +1,10 @@
 import SimpleNodeLogger from 'simple-node-logger';
+import ConsoleAppender from 'simple-node-logger/lib/ConsoleAppender';
 import FS from 'fs';
 
 import Logger from 'nlc-util/src/logger/Logger';
+
+
 
 export default class NLCLogger {
 
@@ -15,21 +18,28 @@ export default class NLCLogger {
     return this._manager;
   }
 
-  install(config = {}) {
+  install(config = {}, isCli = false) {
+    if (isCli) {
+      this.manager.getAppenders().pop();
+    }
+
     if (config.appender !== undefined) {
       for (const appender of config.appender) {
-        this.addAppender(appender);
+        this.addAppender(appender, isCli);
       }
     }
+
     if (config.level !== undefined) {
       this._level = config.level || 'all';
     }
   }
 
-  addAppender(appender) {
+  addAppender(appender, isCli = false) {
     switch (appender.type) {
       case 'console':
-        this.manager.createConsoleAppender(appender);
+        if (!isCli) {
+          this.manager.createConsoleAppender(appender);
+        }
         break;
       case 'file':
         this.manager.createFileAppender(appender);

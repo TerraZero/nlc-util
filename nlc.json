@@ -1,0 +1,15 @@
+{
+  "parameters": {
+    "factory.lazy": {
+      "factory.lazy": true
+    }
+  },
+  "services": {
+    "nlc.util.collection.factory": {
+      "class": "src/loader/CollectionFactory",
+      "arguments": [
+        "@nlc.core"
+      ]
+    }
+  }
+}

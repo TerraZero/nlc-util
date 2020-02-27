@@ -1,5 +1,7 @@
 import Reflection from 'nlc-util/src/data/Reflection';
 
+
+
 export default class Bag {
 
   constructor(data = {}) {

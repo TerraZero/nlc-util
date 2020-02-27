@@ -4,10 +4,13 @@ import Path from 'path';
 
 import Bag from 'nlc-util/src/data/Bag';
 
+
+
 export default class Finder {
 
   constructor(require) {
     this._require = require;
+    this._loaded = [];
   }
 
   /**
@@ -38,21 +41,28 @@ export default class Finder {
 
   /**
    *
-   * @param {import('nlc-util/src/data/BagCollection')} collection
+   * @param {import('nlc-util/src/data/BagCollection').default} collection
    * @param {string|module} context
+   * @param {import('nlc-util/src/logger/Logger').default} logger
    */
-  register(collection, context) {
+  register(collection, context, logger) {
     if (Path.isAbsolute(context)) {
       context = Path.parse(context).base;
     }
+
     const nlc = this.getNLC(context);
     if (nlc === null) return;
 
+    if (this._loaded.includes(context)) return;
+    this._loaded.push(context);
+
+    logger.trace('Register: ' + context);
     collection.addBag(context, new Bag(nlc));
 
     if (nlc.extensions !== undefined) {
       for (const extension of nlc.extensions) {
-        this.register(collection, extension);
+        logger.trace('Register extension: ' + extension);
+        this.register(collection, extension, logger);
       }
     }
   }

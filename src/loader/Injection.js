@@ -2,6 +2,8 @@ import { ContainerBuilder, JsonFileLoader } from 'node-dependency-injection';
 
 import Reflection from 'nlc-util/src/data/Reflection';
 
+
+
 export default class Injection {
 
   constructor() {
@@ -15,6 +17,10 @@ export default class Injection {
 
   get loader() {
     return this._loader;
+  }
+
+  init() {
+    this._logger = NLC.logger.logger('util');
   }
 
   /**
@@ -59,7 +65,7 @@ export default class Injection {
       for (const definition_tag of definition.tags) {
         if (definition_tag.name === tag) {
           services.push({
-            key: key,
+            key,
             attributes: definition_tag.attributes,
           });
         }
@@ -80,7 +86,9 @@ export default class Injection {
     const services = this.getRelevantTags(tag, this.findTags(tag));
 
     for (const service of services) {
-      this.get(service.key)[(service.attributes.get('method') || Reflection.getFunctionNameFromKey(tag))](...params);
+      const method = (service.attributes.get('method') || Reflection.getFunctionNameFromKey(tag));
+      this._logger.trace('Trigger event: ' + service.key + ':' + method + '()');
+      this.get(service.key)[method](...params);
     }
   }
 

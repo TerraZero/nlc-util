@@ -9,7 +9,7 @@ export default class BagCollection {
   }
 
   /**
-   * @returns {Map<string, import('nlc-util/src/data/Bag')>}
+   * @returns {Map<string, import('nlc-util/src/data/Bag').default>}
    */
   get bags() {
     return this._bags;
@@ -27,7 +27,7 @@ export default class BagCollection {
 
   /**
    * @param {string} name
-   * @param {import('nlc-util/src/data/Bag')} bag
+   * @param {import('nlc-util/src/data/Bag').default} bag
    * @returns {this}
    */
   addBag(name, bag) {
